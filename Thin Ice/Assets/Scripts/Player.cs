@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
         transform.Translate(moveDistance *  direction);
         timeToMove = Time.time + moveInterval;
         Instantiate(waterPrefab, oldPosition, Quaternion.identity);
+        GameManager.Instance.PlayerPoints += 1;
+        GameManager.Instance.IcesMelted += 1;
 
         if (transform.position == finishPoint.position)
         {
