@@ -2049,10 +2049,6 @@ PrefabInstance:
       propertyPath: finishPoint
       value: 
       objectReference: {fileID: 99695677}
-    - target: {fileID: 8976400554876131298, guid: 5799059f0c120a54d9aa0c4334954b07, type: 3}
-      propertyPath: interactable.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

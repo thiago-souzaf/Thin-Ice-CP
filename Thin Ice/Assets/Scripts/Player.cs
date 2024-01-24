@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public bool isOnThinIce = true;
 
     public bool hasKey = false;
-
+    public bool isOnTopOfTeleporter = false;
     private void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -45,13 +45,21 @@ public class Player : MonoBehaviour
         Vector2 oldPosition = transform.position;
 
         transform.Translate(moveDistance * direction);
-
-        if (isOnThinIce)
+        
+        if (!isOnTopOfTeleporter)
         {
-            Instantiate(waterPrefab, oldPosition, Quaternion.identity);
+            if (isOnThinIce)
+            {   
+                Instantiate(waterPrefab, oldPosition, Quaternion.identity);
+            }
+            GameManager.Instance.PlayerPoints += 1;
+            GameManager.Instance.IcesMelted += 1;
         }
-        GameManager.Instance.PlayerPoints += 1;
-        GameManager.Instance.IcesMelted += 1;
+        else
+        {   
+            isOnTopOfTeleporter = false;
+        }
+        
 
         if (transform.position == finishPoint.position)
         {
