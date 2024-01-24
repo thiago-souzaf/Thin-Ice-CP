@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public float moveInterval = 0.2f;
 
     public LayerMask notWalkable;
+    public LayerMask interactable;
 
     public GameObject waterPrefab;
 
@@ -37,9 +38,14 @@ public class Player : MonoBehaviour
     {
         if (!CanMoveInDirection(direction)) { return; }
 
-        Vector2 oldPosition = transform.position;
-        transform.Translate(moveDistance *  direction);
         timeToMove = Time.time + moveInterval;
+
+        if (CheckInteractable(direction)) { return; }
+
+        Vector2 oldPosition = transform.position;
+
+        transform.Translate(moveDistance * direction);
+
         if (isOnThinIce)
         {
             Instantiate(waterPrefab, oldPosition, Quaternion.identity);
@@ -61,9 +67,9 @@ public class Player : MonoBehaviour
     }
     bool CanMoveInDirection(Vector3 direction)
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, moveDistance, notWalkable);
-        if (hit){
-            return HasHitInteractable(hit);
+        if (Physics2D.Raycast(transform.position, direction, moveDistance, notWalkable))
+        {
+            return false;
         }
         return true;
     }
@@ -76,12 +82,21 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    bool HasHitInteractable(RaycastHit2D hit)
+    bool CheckInteractable(Vector3 direction)
     {
-        if (hit.collider.gameObject.CompareTag("KeySocket") && hasKey)
+        RaycastHit2D hitInteractable = Physics2D.Raycast(transform.position, direction, moveDistance, interactable);
+        if (hitInteractable)
         {
-            // Hit key socket with key
-            Destroy(hit.collider.gameObject);
+            string hitTag = hitInteractable.collider.tag;
+            if (hitTag == "KeySocket" && hasKey)
+            {
+                hitInteractable.collider.gameObject.GetComponent<KeySocket>().Open();
+            }
+
+            if (hitTag == "MovingBlock")
+            {
+                hitInteractable.collider.gameObject.GetComponent<MovingBlock>().Throw(direction) ;
+            }
             return true;
         }
         return false;
