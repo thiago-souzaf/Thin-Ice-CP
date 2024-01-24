@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
 
     public bool isOnThinIce = true;
 
+    public bool hasKey = false;
+
     private void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -59,9 +61,9 @@ public class Player : MonoBehaviour
     }
     bool CanMoveInDirection(Vector3 direction)
     {
-        
-        if (Physics2D.Raycast(transform.position, direction, moveDistance, notWalkable)){
-            return false;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, moveDistance, notWalkable);
+        if (hit){
+            return HasHitInteractable(hit);
         }
         return true;
     }
@@ -71,6 +73,17 @@ public class Player : MonoBehaviour
         if (CanMoveInDirection(Vector2.right)) { return true; }
         if (CanMoveInDirection(Vector2.down)) { return true; }
         if (CanMoveInDirection(Vector2.left)) { return true; }
+        return false;
+    }
+
+    bool HasHitInteractable(RaycastHit2D hit)
+    {
+        if (hit.collider.gameObject.CompareTag("KeySocket") && hasKey)
+        {
+            // Hit key socket with key
+            Destroy(hit.collider.gameObject);
+            return true;
+        }
         return false;
     }
 
