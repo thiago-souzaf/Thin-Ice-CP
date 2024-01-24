@@ -32,4 +32,8 @@ public class UIManager : MonoBehaviour
         icesInLevel.text = newProgress.ToString() +"/"+ totalIcesToMelt.ToString();
     }
     
+    public void ResetButton()
+    {
+        GameManager.Instance.RestartLevel();
+    }
 }
