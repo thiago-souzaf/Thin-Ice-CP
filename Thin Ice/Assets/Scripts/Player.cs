@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public Vector3 oldPosition;
     public Transform finishPoint;
 
+    public bool isOnThinIce = true;
+
     private void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -36,7 +38,10 @@ public class Player : MonoBehaviour
         Vector2 oldPosition = transform.position;
         transform.Translate(moveDistance *  direction);
         timeToMove = Time.time + moveInterval;
-        Instantiate(waterPrefab, oldPosition, Quaternion.identity);
+        if (isOnThinIce)
+        {
+            Instantiate(waterPrefab, oldPosition, Quaternion.identity);
+        }
         GameManager.Instance.PlayerPoints += 1;
         GameManager.Instance.IcesMelted += 1;
 
