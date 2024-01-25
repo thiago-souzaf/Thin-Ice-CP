@@ -8,6 +8,7 @@ public class Treasure : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.PlayerPoints += treasurePoints;
+            GameManager.Instance.coinBagsCollected++;
             AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.treasureGet);
             Destroy(gameObject);
         }

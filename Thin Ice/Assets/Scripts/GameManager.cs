@@ -54,6 +54,10 @@ public class GameManager : MonoBehaviour
     public UnityEvent<int> pointsChanged;
     public UnityEvent<int> icesMeltedChanged;
 
+    public int coinBagsCollected = 0; // coin bags collected per level
+    public int totalCoinBagsCollected = 0; // total bags collected on game
+    public int totalIceMelted = 0;
+
     private void Start()
     {
         CurrentLevel = 1;
@@ -66,6 +70,7 @@ public class GameManager : MonoBehaviour
     {
         _playerPoints = pointsAtLevelStart;
         _icesMelted = 0;
+        coinBagsCollected = 0;
         AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.levelStart);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -76,13 +81,21 @@ public class GameManager : MonoBehaviour
         {
             LevelsSolved++;
             _playerPoints += AmountOfIces * 2;
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.levelComplete);
         }
-        
         CurrentLevel++;
-        AmountOfIces = icesPerLevel[CurrentLevel - 1];
+        if (CurrentLevel <= icesPerLevel.Length)
+        {
+            AmountOfIces = icesPerLevel[CurrentLevel - 1];
+        }
+        totalIceMelted += _icesMelted;
         _icesMelted = 0;
+
+        totalCoinBagsCollected += coinBagsCollected;
+        coinBagsCollected = 0;
+
         pointsAtLevelStart = _playerPoints;
-        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.levelComplete);
+        
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
