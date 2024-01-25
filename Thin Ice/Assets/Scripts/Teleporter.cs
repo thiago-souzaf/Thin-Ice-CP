@@ -14,4 +14,12 @@ public class Teleporter : MonoBehaviour
             OnTeleportUse.Invoke(teleporterID);
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<Player>().isOnTopOfTeleporter = false;
+        }
+    }
 }

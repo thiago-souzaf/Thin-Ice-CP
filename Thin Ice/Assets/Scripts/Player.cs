@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     public bool hasKey = false;
     public bool isOnTopOfTeleporter = false;
+    public bool isOnSecretPart = false;
     private void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -46,7 +47,7 @@ public class Player : MonoBehaviour
 
         transform.Translate(moveDistance * direction);
         
-        if (!isOnTopOfTeleporter)
+        if (!isOnTopOfTeleporter && !isOnSecretPart)
         {
             if (isOnThinIce)
             {   
@@ -55,11 +56,6 @@ public class Player : MonoBehaviour
             GameManager.Instance.PlayerPoints += 1;
             GameManager.Instance.IcesMelted += 1;
         }
-        else
-        {   
-            isOnTopOfTeleporter = false;
-        }
-        
 
         if (transform.position == finishPoint.position)
         {
