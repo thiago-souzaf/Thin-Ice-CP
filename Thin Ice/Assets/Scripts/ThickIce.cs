@@ -14,6 +14,7 @@ public class ThickIce : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<Player>().isOnThinIce = true;
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.thickIceBreak);
             Destroy(gameObject);
         }
     }

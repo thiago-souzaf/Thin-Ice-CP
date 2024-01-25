@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     {
         _playerPoints = pointsAtLevelStart;
         _icesMelted = 0;
+        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.levelStart);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
         AmountOfIces = icesPerLevel[CurrentLevel - 1];
         _icesMelted = 0;
         pointsAtLevelStart = _playerPoints;
-
+        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.levelComplete);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }

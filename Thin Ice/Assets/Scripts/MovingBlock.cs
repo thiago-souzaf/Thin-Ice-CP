@@ -9,6 +9,7 @@ public class MovingBlock : MonoBehaviour
     private float rayCastDistance = 0.5f;
 	public void Throw(Vector3 direction)
 	{
+        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.movingBlock);
         StartCoroutine(Move(direction));
     }
 

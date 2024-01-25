@@ -1,25 +1,28 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float moveDistance = 1f;
-    public float moveInterval = 0.2f;
+    [Header("Movement properties")]
+    public float MoveDistance = 1f;
+    public float MoveInterval = 0.15f;
+    private float timeToMove;
 
+    [Header("Layers")]
     public LayerMask notWalkable;
     public LayerMask interactable;
 
+    [Header("Spawn Water")]
     public GameObject waterPrefab;
 
-    private float timeToMove;
-
-    public Vector3 oldPosition;
+    [Header("Finish point")]
     public Transform finishPoint;
 
-    public bool isOnThinIce = true;
-
     public bool hasKey = false;
+    public bool isOnThinIce = true;
     public bool isOnTopOfTeleporter = false;
     public bool isOnSecretPart = false;
+
     private void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -39,18 +42,19 @@ public class Player : MonoBehaviour
     {
         if (!CanMoveInDirection(direction)) { return; }
 
-        timeToMove = Time.time + moveInterval;
+        timeToMove = Time.time + MoveInterval;
 
         if (CheckInteractable(direction)) { return; }
 
         Vector2 oldPosition = transform.position;
 
-        transform.Translate(moveDistance * direction);
+        transform.Translate(MoveDistance * direction);
         
         if (!isOnTopOfTeleporter && !isOnSecretPart)
         {
             if (isOnThinIce)
-            {   
+            {
+                AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.thinIceBreak);
                 Instantiate(waterPrefab, oldPosition, Quaternion.identity);
             }
             GameManager.Instance.PlayerPoints += 1;
@@ -65,13 +69,16 @@ public class Player : MonoBehaviour
         }
         if (!CanMoveInAnyDirection())
         {
-            GameManager.Instance.RestartLevel();
-            Debug.Log("Game over");
+            // Die and restart level
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.playerDead);
+            GetComponent<Animator>().SetBool("Dead", true);
+            Instantiate(waterPrefab, transform.position, Quaternion.identity);
+            GameManager.Instance.Invoke(nameof(GameManager.Instance.RestartLevel), 0.5f);
         }
     }
     bool CanMoveInDirection(Vector3 direction)
     {
-        if (Physics2D.Raycast(transform.position, direction, moveDistance, notWalkable))
+        if (Physics2D.Raycast(transform.position, direction, MoveDistance, notWalkable))
         {
             return false;
         }
@@ -88,7 +95,7 @@ public class Player : MonoBehaviour
 
     bool CheckInteractable(Vector3 direction)
     {
-        RaycastHit2D hitInteractable = Physics2D.Raycast(transform.position, direction, moveDistance, interactable);
+        RaycastHit2D hitInteractable = Physics2D.Raycast(transform.position, direction, MoveDistance, interactable);
         if (hitInteractable)
         {
             string hitTag = hitInteractable.collider.tag;

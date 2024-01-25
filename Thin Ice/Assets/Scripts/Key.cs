@@ -7,6 +7,7 @@ public class Key : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<Player>().hasKey = true;
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.key);
             Destroy(gameObject);
         }
     }

@@ -100,8 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19c8e0195954a9429f5f2a73e9382c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDistance: 1
-  moveInterval: 0.15
+  MoveDistance: 1
+  MoveInterval: 0.2
   notWalkable:
     serializedVersion: 2
     m_Bits: 256
@@ -109,11 +109,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   waterPrefab: {fileID: 3706779022496448464, guid: 0a5cda2a9f0bb704faba73c1bc15deca, type: 3}
-  oldPosition: {x: 0, y: 0, z: 0}
   finishPoint: {fileID: 0}
-  isOnThinIce: 1
   hasKey: 0
+  isOnThinIce: 1
   isOnTopOfTeleporter: 0
+  isOnSecretPart: 0
 --- !u!50 &6126804576892938162
 Rigidbody2D:
   serializedVersion: 4

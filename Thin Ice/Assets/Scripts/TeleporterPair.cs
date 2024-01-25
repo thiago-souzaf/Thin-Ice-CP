@@ -12,9 +12,11 @@ public class TeleporterPair : MonoBehaviour
 	{
         player.isOnTopOfTeleporter = true;
         DisableTeleporters();
-		
-		if (!teleportable) { return; }
+        
+
+        if (!teleportable) { return; }
         teleportable = false;
+        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.teleport);
 
         if (enteredTeleport == "A")
 		{
